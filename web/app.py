@@ -40,7 +40,7 @@ def set_scheduler(scheduler):
 @app.get("/", response_class=HTMLResponse)
 async def index(request: Request):
     config = load_config(str(CONFIG_PATH))
-    jobs = config.get("jobs", [])
+    jobs = config.get("jobs") or []
     yaml_content = CONFIG_PATH.read_text(encoding="utf-8")
     return templates.TemplateResponse(
         "index.html",
@@ -92,7 +92,7 @@ class RunJobBody(BaseModel):
 @app.post("/api/run-job")
 async def run_job_now(body: RunJobBody):
     config = load_config(str(CONFIG_PATH))
-    jobs = config.get("jobs", [])
+    jobs = config.get("jobs") or []
 
     if body.job_index < 0 or body.job_index >= len(jobs):
         raise HTTPException(status_code=404, detail="Job não encontrado.")
@@ -110,7 +110,7 @@ async def run_job_now(body: RunJobBody):
 @app.get("/api/jobs")
 async def list_jobs():
     config = load_config(str(CONFIG_PATH))
-    jobs = config.get("jobs", [])
+    jobs = config.get("jobs") or []
     result = []
     for i, job in enumerate(jobs):
         result.append({
