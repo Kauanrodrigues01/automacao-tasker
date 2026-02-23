@@ -70,8 +70,9 @@ async def save_config(body: ConfigBody):
     except yaml.YAMLError as e:
         raise HTTPException(status_code=400, detail=f"YAML inválido: {e}")
 
-    if not isinstance(parsed, dict) or "jobs" not in parsed:
-        raise HTTPException(status_code=400, detail="O YAML deve conter a chave 'jobs'.")
+    # Aceita YAML vazio/sem jobs (apenas comenta tudo) — sem lançar erro
+    if parsed is not None and not isinstance(parsed, dict):
+        raise HTTPException(status_code=400, detail="YAML deve ser um mapeamento (chave: valor).")
 
     CONFIG_PATH.write_text(body.content, encoding="utf-8")
     logger.info("config.yaml atualizado via interface web.")
@@ -79,7 +80,7 @@ async def save_config(body: ConfigBody):
     # Reagenda os jobs com o novo config
     if _scheduler:
         from web.scheduler_utils import reschedule
-        reschedule(_scheduler, parsed)
+        reschedule(_scheduler, parsed or {})
 
     return {"ok": True, "message": "config.yaml salvo e jobs reagendados."}
 

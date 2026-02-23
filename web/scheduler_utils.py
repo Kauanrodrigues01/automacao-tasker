@@ -10,8 +10,12 @@ def reschedule(scheduler: BackgroundScheduler, config: dict):
     """Remove todos os jobs do scheduler e reagenda com o novo config."""
     scheduler.remove_all_jobs()
 
-    jobs = config.get("jobs", [])
+    jobs = (config or {}).get("jobs") or []
     now = datetime.now()
+
+    if not jobs:
+        logger.info("Nenhum job no config — scheduler sem tarefas agendadas.")
+        return
 
     for job in jobs:
         name = job.get("name", "job")
