@@ -34,9 +34,10 @@ ENV PATH="/venv/bin:$PATH" \
     PYTHONUNBUFFERED=1 \
     PYTHONDONTWRITEBYTECODE=1
 
-# Instala dependências de sistema do Chromium (como root, antes de criar usuário)
-# playwright install-deps resolve automaticamente os pacotes corretos para a distro
+# Instala dependências de sistema do Chromium + gosu (drop de privilégio no entrypoint)
+# playwright install-deps já roda apt-get update internamente
 RUN playwright install-deps chromium && \
+    apt-get install -y --no-install-recommends gosu && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/*
 
@@ -55,8 +56,10 @@ COPY --chown=tasker:tasker . .
 # Cria diretório de logs com permissão correta
 RUN mkdir -p logs && chown tasker:tasker logs
 
-USER tasker
+# Entrypoint: roda como root, corrige permissões dos bind mounts e troca para tasker
+RUN chmod +x /app/entrypoint.sh
 
 EXPOSE 8000
 
+ENTRYPOINT ["/app/entrypoint.sh"]
 CMD ["python", "main.py"]

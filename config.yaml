@@ -1,7 +1,7 @@
 jobs:
   # ── Caso 1: Login + Iniciar tarefa ─────────────────────────────────────────
   # - name: "Iniciar NEO-168"
-  #   date: "2026-02-24"
+  #   date: "2026-02-23"
   #   time: "08:00"
   #   task_id: "NEO-168"
   #   actions:
