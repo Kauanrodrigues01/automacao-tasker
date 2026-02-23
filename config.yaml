@@ -1,39 +1,39 @@
 jobs:
   # ── Caso 1: Login + Iniciar tarefa ─────────────────────────────────────────
-  - name: "Iniciar NEO-168"
-    date: "2026-02-24"
-    time: "08:00"
-    task_id: "NEO-168"
-    actions:
-      - login
-      - set_task_executing
+  # - name: "Iniciar NEO-168"
+  #   date: "2026-02-24"
+  #   time: "08:00"
+  #   task_id: "NEO-168"
+  #   actions:
+  #     - login
+  #     - set_task_executing
 
   # ── Caso 2: Login + Registrar horas + Concluir tarefa ──────────────────────
-  - name: "Encerrar NEO-168"
-    date: "2026-02-24"
-    time: "17:30"
-    task_id: "NEO-168"
-    hours: 8
-    actions:
-      - login
-      - add_hours
-      - set_task_completed
+  # - name: "Encerrar NEO-168"
+  #   date: "2026-02-24"
+  #   time: "17:30"
+  #   task_id: "NEO-168"
+  #   hours: 8
+  #   actions:
+  #     - login
+  #     - add_hours
+  #     - set_task_completed
 
   # ── Caso 3: Login + Apenas registrar horas (sem concluir) ──────────────────
-  - name: "Lançar horas parciais NEO-101"
-    date: "2026-02-25"
-    time: "12:00"
-    task_id: "NEO-101"
-    hours: 4
-    actions:
-      - login
-      - add_hours
+  # - name: "Lançar horas parciais NEO-101"
+  #   date: "2026-02-25"
+  #   time: "12:00"
+  #   task_id: "NEO-101"
+  #   hours: 4
+  #   actions:
+  #     - login
+  #     - add_hours
 
   # ── Caso 4: Login + Apenas concluir (sem registrar horas) ──────────────────
-  - name: "Concluir NEO-161"
-    date: "2026-02-25"
-    time: "18:00"
-    task_id: "NEO-161"
-    actions:
-      - login
-      - set_task_completed
+  # - name: "Concluir NEO-161"
+  #   date: "2026-02-25"
+  #   time: "18:00"
+  #   task_id: "NEO-161"
+  #   actions:
+  #     - login
+  #     - set_task_completed
