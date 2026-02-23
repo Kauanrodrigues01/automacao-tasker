@@ -9,9 +9,6 @@ services:
     container_name: tasker-automacao
     restart: unless-stopped
 
-    ports:
-      - "8000:8000"
-
     # Credenciais e variáveis de ambiente injetadas em runtime (não entram na imagem)
     env_file:
       - .env
