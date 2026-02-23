@@ -43,9 +43,10 @@ RUN playwright install-deps chromium && \
 # Copia os browsers do builder
 COPY --from=builder /opt/pw-browsers /opt/pw-browsers
 
-# Cria usuário não-root
-RUN groupadd -r tasker && \
-    useradd -r -g tasker -m -s /bin/sh tasker && \
+# Cria usuário não-root com UID/GID 1000 (igual ao usuário do host)
+# para que o bind mount do config.yaml e logs/ tenha permissão de escrita
+RUN groupadd -g 1000 tasker && \
+    useradd -u 1000 -g tasker -m -s /bin/sh tasker && \
     chown -R tasker:tasker /opt/pw-browsers
 
 # Copia o código da aplicação com ownership do usuário não-root
