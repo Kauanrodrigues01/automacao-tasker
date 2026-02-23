@@ -2,8 +2,11 @@ from apscheduler.schedulers.background import BackgroundScheduler
 from core.job_runner import run_job
 from core.logger import setup_logger
 from datetime import datetime
+from zoneinfo import ZoneInfo
 
 logger = setup_logger()
+
+TZ = ZoneInfo("America/Fortaleza")
 
 
 def reschedule(scheduler: BackgroundScheduler, config: dict):
@@ -11,7 +14,7 @@ def reschedule(scheduler: BackgroundScheduler, config: dict):
     scheduler.remove_all_jobs()
 
     jobs = (config or {}).get("jobs") or []
-    now = datetime.now()
+    now = datetime.now(tz=TZ)
 
     if not jobs:
         logger.info("Nenhum job no config — scheduler sem tarefas agendadas.")
@@ -29,7 +32,7 @@ def reschedule(scheduler: BackgroundScheduler, config: dict):
         run_date_str = f"{date_str} {time_str}:00"
 
         try:
-            run_date = datetime.strptime(run_date_str, "%Y-%m-%d %H:%M:%S")
+            run_date = datetime.strptime(run_date_str, "%Y-%m-%d %H:%M:%S").replace(tzinfo=TZ)
         except ValueError:
             logger.warning(f"Job '{name}' com data inválida '{run_date_str}' — ignorado.")
             continue

@@ -14,7 +14,7 @@ logger = setup_logger()
 def main():
     config = load_config("config.yaml")
 
-    scheduler = BackgroundScheduler(timezone="America/Sao_Paulo")
+    scheduler = BackgroundScheduler(timezone="America/Fortaleza")
     set_scheduler(scheduler)
     reschedule(scheduler, config)
     scheduler.start()
