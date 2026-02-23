@@ -1,0 +1,36 @@
+services:
+  tasker:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      # Cache separado por stage — rebuild só do que mudou
+      target: runtime
+
+    container_name: tasker-automacao
+    restart: unless-stopped
+
+    ports:
+      - "8000:8000"
+
+    # Credenciais e variáveis de ambiente injetadas em runtime (não entram na imagem)
+    env_file:
+      - .env
+
+    # Garante HEADLESS=true dentro do container (sem display)
+    environment:
+      - HEADLESS=true
+
+    volumes:
+      # config.yaml editável pela interface web e persistido no host
+      - ./config.yaml:/app/config.yaml
+
+      # Logs persistidos no host
+      - ./logs:/app/logs
+
+    # Healthcheck: verifica se o servidor web está respondendo
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:8000/')"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 15s

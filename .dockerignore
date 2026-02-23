@@ -1,0 +1,32 @@
+# Ambiente virtual local (não entra na imagem — usa o /venv do builder)
+.venv/
+
+# Cache Python
+__pycache__/
+**/__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Credenciais (injetadas em runtime via env_file no docker-compose)
+.env
+
+# Controle de versão
+.git/
+.gitignore
+
+# Logs locais (montados como volume no docker-compose)
+logs/
+
+# Testes e scripts de desenvolvimento
+testes/
+tests/
+
+# Documentação e planos
+*.md
+.claude/
+
+# Arquivos do editor
+.vscode/
+*.swp
+*.swo
