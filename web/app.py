@@ -85,6 +85,67 @@ async def save_config(body: ConfigBody):
     return {"ok": True, "message": "config.yaml salvo e jobs reagendados."}
 
 
+class JobBody(BaseModel):
+    name: str
+    date: str
+    time: str
+    task_id: str
+    hours: float | None = None
+    actions: list[str]
+
+
+def _save_config(config: dict) -> None:
+    """Serializa e salva o config.yaml, reagendando os jobs."""
+    content = yaml.dump(config, allow_unicode=True, default_flow_style=False, sort_keys=False)
+    CONFIG_PATH.write_text(content, encoding="utf-8")
+    if _scheduler:
+        from web.scheduler_utils import reschedule
+        reschedule(_scheduler, config)
+
+
+@app.post("/api/jobs")
+async def create_job(body: JobBody):
+    config = load_config(str(CONFIG_PATH))
+    jobs = config.get("jobs") or []
+    job = {"name": body.name, "date": body.date, "time": body.time, "task_id": body.task_id, "actions": body.actions}
+    if body.hours is not None:
+        job["hours"] = body.hours
+    jobs.append(job)
+    config["jobs"] = jobs
+    _save_config(config)
+    logger.info(f"Job '{body.name}' criado via interface web.")
+    return {"ok": True, "message": f"Job '{body.name}' criado."}
+
+
+@app.put("/api/jobs/{index}")
+async def update_job(index: int, body: JobBody):
+    config = load_config(str(CONFIG_PATH))
+    jobs = config.get("jobs") or []
+    if index < 0 or index >= len(jobs):
+        raise HTTPException(status_code=404, detail="Job não encontrado.")
+    job = {"name": body.name, "date": body.date, "time": body.time, "task_id": body.task_id, "actions": body.actions}
+    if body.hours is not None:
+        job["hours"] = body.hours
+    jobs[index] = job
+    config["jobs"] = jobs
+    _save_config(config)
+    logger.info(f"Job '{body.name}' (índice {index}) atualizado via interface web.")
+    return {"ok": True, "message": f"Job '{body.name}' atualizado."}
+
+
+@app.delete("/api/jobs/{index}")
+async def delete_job(index: int):
+    config = load_config(str(CONFIG_PATH))
+    jobs = config.get("jobs") or []
+    if index < 0 or index >= len(jobs):
+        raise HTTPException(status_code=404, detail="Job não encontrado.")
+    removed = jobs.pop(index)
+    config["jobs"] = jobs
+    _save_config(config)
+    logger.info(f"Job '{removed.get('name')}' removido via interface web.")
+    return {"ok": True, "message": f"Job '{removed.get('name')}' removido."}
+
+
 class RunJobBody(BaseModel):
     job_index: int
 

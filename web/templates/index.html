@@ -14,66 +14,32 @@
       min-height: 100vh;
     }
 
+    /* ── Header ── */
     header {
       background: linear-gradient(135deg, #0a2463, #1e40af);
       color: white;
       padding: 1rem 2rem;
       display: flex;
       align-items: center;
-      gap: 0.75rem;
+      justify-content: space-between;
       box-shadow: 0 2px 8px rgba(0,0,0,0.2);
     }
 
+    .header-left { display: flex; align-items: center; gap: 0.75rem; }
     header h1 { font-size: 1.25rem; font-weight: 600; }
     header span { font-size: 0.85rem; opacity: 0.7; }
 
+    /* ── Layout ── */
     main {
-      max-width: 1100px;
+      max-width: 900px;
       margin: 2rem auto;
       padding: 0 1.5rem;
-      display: grid;
-      grid-template-columns: 1fr 1fr;
+      display: flex;
+      flex-direction: column;
       gap: 1.5rem;
     }
 
-    @media (max-width: 768px) {
-      main { grid-template-columns: 1fr; }
-    }
-
-    .card {
-      background: white;
-      border-radius: 12px;
-      padding: 1.5rem;
-      box-shadow: 0 1px 4px rgba(0,0,0,0.08);
-    }
-
-    .card h2 {
-      font-size: 1rem;
-      font-weight: 600;
-      margin-bottom: 1rem;
-      padding-bottom: 0.5rem;
-      border-bottom: 2px solid #e2e8f0;
-      color: #0a2463;
-    }
-
-    /* ── Editor YAML ── */
-    #yaml-editor {
-      width: 100%;
-      height: 420px;
-      font-family: 'Courier New', monospace;
-      font-size: 0.82rem;
-      border: 1px solid #cbd5e1;
-      border-radius: 8px;
-      padding: 0.75rem;
-      resize: vertical;
-      background: #f8fafc;
-      color: #1e293b;
-      line-height: 1.5;
-      outline: none;
-    }
-
-    #yaml-editor:focus { border-color: #3b82f6; box-shadow: 0 0 0 3px rgba(59,130,246,0.15); }
-
+    /* ── Buttons ── */
     .btn {
       display: inline-flex;
       align-items: center;
@@ -87,151 +53,369 @@
       transition: all 0.2s;
     }
 
-    .btn-primary {
-      background: linear-gradient(135deg, #0a2463, #1e40af);
-      color: white;
-      margin-top: 0.75rem;
-    }
+    .btn-primary { background: linear-gradient(135deg, #0a2463, #1e40af); color: white; }
     .btn-primary:hover { opacity: 0.9; transform: translateY(-1px); }
 
-    .btn-run {
-      background: #16a34a;
-      color: white;
-      padding: 0.4rem 0.85rem;
-      font-size: 0.8rem;
+    .btn-new {
+      background: white;
+      color: #1e40af;
+      font-weight: 600;
+      padding: 0.5rem 1.25rem;
     }
+    .btn-new:hover { background: #eff6ff; }
+
+    .btn-run  { background: #16a34a; color: white; padding: 0.35rem 0.75rem; font-size: 0.8rem; }
     .btn-run:hover { background: #15803d; }
     .btn-run:disabled { background: #86efac; cursor: not-allowed; transform: none; }
 
+    .btn-edit { background: #e0f2fe; color: #0369a1; padding: 0.35rem 0.75rem; font-size: 0.8rem; }
+    .btn-edit:hover { background: #bae6fd; }
+
+    .btn-del  { background: #fee2e2; color: #dc2626; padding: 0.35rem 0.75rem; font-size: 0.8rem; }
+    .btn-del:hover { background: #fecaca; }
+
+    .btn-ghost { background: transparent; color: #64748b; border: 1px solid #cbd5e1; }
+    .btn-ghost:hover { background: #f1f5f9; }
+
     /* ── Toast ── */
     #toast {
-      position: fixed;
-      bottom: 1.5rem;
-      right: 1.5rem;
-      padding: 0.75rem 1.25rem;
-      border-radius: 10px;
-      font-size: 0.875rem;
-      font-weight: 500;
-      color: white;
+      position: fixed; bottom: 1.5rem; right: 1.5rem;
+      padding: 0.75rem 1.25rem; border-radius: 10px;
+      font-size: 0.875rem; font-weight: 500; color: white;
       box-shadow: 0 4px 12px rgba(0,0,0,0.2);
-      opacity: 0;
-      transform: translateY(10px);
-      transition: all 0.3s;
-      z-index: 999;
-      max-width: 320px;
+      opacity: 0; transform: translateY(10px);
+      transition: all 0.3s; z-index: 9999; max-width: 320px;
     }
     #toast.show { opacity: 1; transform: translateY(0); }
     #toast.success { background: #16a34a; }
     #toast.error   { background: #dc2626; }
 
-    /* ── Jobs ── */
-    #jobs-list { display: flex; flex-direction: column; gap: 0.75rem; max-height: 500px; overflow-y: auto; }
+    /* ── Jobs list ── */
+    #jobs-list { display: flex; flex-direction: column; gap: 0.75rem; }
 
     .job-card {
+      background: white;
       border: 1px solid #e2e8f0;
-      border-radius: 10px;
-      padding: 1rem;
+      border-radius: 12px;
+      padding: 1rem 1.25rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.6rem;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+      transition: box-shadow 0.2s;
+    }
+    .job-card:hover { box-shadow: 0 2px 8px rgba(0,0,0,0.1); }
+
+    .job-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .job-name { font-weight: 600; font-size: 0.95rem; color: #0a2463; }
+
+    .job-actions-btns { display: flex; gap: 0.4rem; flex-shrink: 0; }
+
+    .job-meta { display: flex; flex-wrap: wrap; gap: 0.4rem; }
+
+    .badge {
+      padding: 0.2rem 0.6rem;
+      border-radius: 9999px;
+      font-size: 0.72rem;
+      font-weight: 500;
+      background: #e2e8f0;
+      color: #475569;
+    }
+    .badge.date   { background: #dbeafe; color: #1d4ed8; }
+    .badge.action { background: #dcfce7; color: #166534; }
+    .badge.past   { background: #fee2e2; color: #991b1b; }
+    .badge.hours  { background: #fef9c3; color: #854d0e; }
+
+    .running-indicator { font-size: 0.75rem; color: #16a34a; font-style: italic; }
+
+    .empty-state { color: #94a3b8; font-size: 0.875rem; text-align: center; padding: 2rem 0; }
+
+    /* ── YAML Accordion ── */
+    .yaml-accordion {
+      background: white;
+      border-radius: 12px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+      overflow: hidden;
+    }
+
+    .yaml-accordion summary {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 1rem 1.25rem;
+      cursor: pointer;
+      font-size: 0.875rem;
+      font-weight: 500;
+      color: #64748b;
+      list-style: none;
+      user-select: none;
+      border-bottom: 1px solid transparent;
+      transition: background 0.2s;
+    }
+    .yaml-accordion summary:hover { background: #f8fafc; }
+    .yaml-accordion[open] summary { border-color: #e2e8f0; color: #1e293b; }
+    .yaml-accordion summary::before { content: '▶'; font-size: 0.65rem; transition: transform 0.2s; }
+    .yaml-accordion[open] summary::before { transform: rotate(90deg); }
+
+    .yaml-body { padding: 1.25rem; }
+
+    #yaml-editor {
+      width: 100%;
+      height: 320px;
+      font-family: 'Courier New', monospace;
+      font-size: 0.82rem;
+      border: 1px solid #cbd5e1;
+      border-radius: 8px;
+      padding: 0.75rem;
+      resize: vertical;
       background: #f8fafc;
+      color: #1e293b;
+      line-height: 1.5;
+      outline: none;
+    }
+    #yaml-editor:focus { border-color: #3b82f6; box-shadow: 0 0 0 3px rgba(59,130,246,0.15); }
+
+    /* ── Modal ── */
+    .modal-overlay {
+      display: none;
+      position: fixed; inset: 0;
+      background: rgba(15, 23, 42, 0.55);
+      z-index: 1000;
+      align-items: center;
+      justify-content: center;
+      padding: 1rem;
+    }
+    .modal-overlay.open { display: flex; }
+
+    .modal {
+      background: white;
+      border-radius: 16px;
+      width: 100%;
+      max-width: 500px;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.25);
+      display: flex;
+      flex-direction: column;
+      max-height: 90vh;
+      overflow: hidden;
+    }
+
+    .modal-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1.25rem 1.5rem;
+      border-bottom: 1px solid #e2e8f0;
+    }
+    .modal-header h2 { font-size: 1.05rem; font-weight: 600; color: #0a2463; }
+
+    .modal-close {
+      background: none; border: none; cursor: pointer;
+      color: #94a3b8; font-size: 1.25rem; line-height: 1;
+      padding: 0.25rem; border-radius: 6px;
+    }
+    .modal-close:hover { background: #f1f5f9; color: #475569; }
+
+    .modal-body { padding: 1.5rem; overflow-y: auto; display: flex; flex-direction: column; gap: 1rem; }
+
+    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; }
+
+    .field { display: flex; flex-direction: column; gap: 0.35rem; }
+    .field label { font-size: 0.8rem; font-weight: 600; color: #374151; }
+
+    .field input {
+      padding: 0.5rem 0.75rem;
+      border: 1px solid #cbd5e1;
+      border-radius: 8px;
+      font-size: 0.875rem;
+      outline: none;
+      transition: border-color 0.2s;
+      background: #f8fafc;
+    }
+    .field input:focus { border-color: #3b82f6; background: white; box-shadow: 0 0 0 3px rgba(59,130,246,0.1); }
+
+    .field-checkbox {
       display: flex;
       flex-direction: column;
       gap: 0.5rem;
     }
 
-    .job-header {
+    .checkbox-item {
       display: flex;
-      justify-content: space-between;
-      align-items: flex-start;
-      gap: 0.5rem;
+      align-items: center;
+      gap: 0.6rem;
+      padding: 0.5rem 0.75rem;
+      border-radius: 8px;
+      border: 1px solid #e2e8f0;
+      cursor: pointer;
+      transition: background 0.15s;
     }
+    .checkbox-item:hover { background: #f0f9ff; }
+    .checkbox-item input[type="checkbox"] { accent-color: #1e40af; width: 15px; height: 15px; cursor: pointer; }
+    .checkbox-item span { font-size: 0.875rem; color: #374151; }
+    .checkbox-item small { font-size: 0.72rem; color: #94a3b8; margin-left: auto; }
 
-    .job-name { font-weight: 600; font-size: 0.9rem; color: #0a2463; }
-
-    .job-meta { font-size: 0.78rem; color: #64748b; display: flex; flex-wrap: wrap; gap: 0.4rem; }
-
-    .badge {
-      background: #e2e8f0;
-      color: #475569;
-      padding: 0.15rem 0.5rem;
-      border-radius: 9999px;
-      font-size: 0.72rem;
-      font-weight: 500;
-    }
-
-    .badge.date  { background: #dbeafe; color: #1d4ed8; }
-    .badge.action { background: #dcfce7; color: #166534; }
-    .badge.past  { background: #fee2e2; color: #991b1b; }
-
-    .running-indicator {
-      font-size: 0.75rem;
-      color: #16a34a;
-      font-style: italic;
+    .modal-footer {
+      display: flex;
+      justify-content: flex-end;
+      gap: 0.75rem;
+      padding: 1rem 1.5rem;
+      border-top: 1px solid #e2e8f0;
     }
   </style>
 </head>
 <body>
 
+<!-- Header -->
 <header>
-  <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6l4 2"/><circle cx="12" cy="12" r="10"/></svg>
-  <div>
-    <h1>Tasker Automação</h1>
-    <span>Gerenciador de jobs automatizados</span>
+  <div class="header-left">
+    <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+      <path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6l4 2"/>
+      <circle cx="12" cy="12" r="10"/>
+    </svg>
+    <div>
+      <h1>Tasker Automação</h1>
+      <span>Gerenciador de jobs automatizados</span>
+    </div>
   </div>
+  <button class="btn btn-new" onclick="openModal()">+ Novo Job</button>
 </header>
 
 <main>
 
-  <!-- Editor YAML -->
-  <div class="card">
-    <h2>Editor de configuração (config.yaml)</h2>
-    <textarea id="yaml-editor">{{ yaml_content }}</textarea>
-    <button class="btn btn-primary" onclick="saveConfig()">
-      Salvar configuração
-    </button>
+  <!-- Jobs -->
+  <div id="jobs-list">
+    {% for job in jobs %}
+    {% set past = job.date and job.date < today %}
+    <div class="job-card">
+      <div class="job-header">
+        <span class="job-name">{{ job.name }}</span>
+        <div class="job-actions-btns">
+          <button class="btn btn-run" onclick="runJob({{ loop.index0 }}, this)" title="Executar agora">▶ Executar</button>
+          <button class="btn btn-edit" onclick="editJob({{ loop.index0 }})" title="Editar">✎</button>
+          <button class="btn btn-del"  onclick="deleteJob({{ loop.index0 }}, this)" title="Remover">🗑</button>
+        </div>
+      </div>
+      <div class="job-meta">
+        {% if job.date %}
+        <span class="badge date {% if past %}past{% endif %}">📅 {{ job.date }} às {{ job.time }}{% if past %} — passado{% endif %}</span>
+        {% else %}
+        <span class="badge past">⚠ Sem data</span>
+        {% endif %}
+        <span class="badge">🎫 {{ job.task_id }}</span>
+        {% if job.hours %}<span class="badge hours">⏱ {{ job.hours }}h</span>{% endif %}
+      </div>
+      <div class="job-meta">
+        {% for action in job.actions %}
+        <span class="badge action">{{ action }}</span>
+        {% endfor %}
+      </div>
+      <div class="running-indicator" id="status-{{ loop.index0 }}" style="display:none;">⚙ Rodando em background — verifique os logs.</div>
+    </div>
+    {% else %}
+    <p class="empty-state">Nenhum job criado ainda. Clique em <strong>+ Novo Job</strong> para começar.</p>
+    {% endfor %}
   </div>
 
-  <!-- Lista de Jobs -->
-  <div class="card">
-    <h2>Jobs agendados</h2>
-    <div id="jobs-list">
-      {% for job in jobs %}
-      {% set past = job.date and job.date < today %}
-      <div class="job-card">
-        <div class="job-header">
-          <span class="job-name">{{ job.name }}</span>
-          <button class="btn btn-run" onclick="runJob({{ loop.index0 }}, this)">
-            ▶ Executar agora
-          </button>
-        </div>
-        <div class="job-meta">
-          {% if job.date %}
-          <span class="badge date {% if past %}past{% endif %}">
-            📅 {{ job.date }} às {{ job.time }}
-            {% if past %} — passado{% endif %}
-          </span>
-          {% else %}
-          <span class="badge past">⚠ Sem data definida</span>
-          {% endif %}
-          <span class="badge">Task: {{ job.task_id }}</span>
-          {% if job.hours %}<span class="badge">{{ job.hours }}h</span>{% endif %}
-        </div>
-        <div class="job-meta">
-          {% for action in job.actions %}
-          <span class="badge action">{{ action }}</span>
-          {% endfor %}
-        </div>
-        <div class="running-indicator" id="status-{{ loop.index0 }}" style="display:none;">Executando...</div>
+  <!-- YAML accordion -->
+  <details class="yaml-accordion">
+    <summary>Configuração avançada (editar YAML diretamente)</summary>
+    <div class="yaml-body">
+      <textarea id="yaml-editor">{{ yaml_content }}</textarea>
+      <div style="margin-top:0.75rem">
+        <button class="btn btn-primary" onclick="saveYaml()">Salvar YAML</button>
       </div>
-      {% else %}
-      <p style="color:#94a3b8;font-size:0.875rem;">Nenhum job encontrado no config.yaml.</p>
-      {% endfor %}
     </div>
-  </div>
+  </details>
 
 </main>
+
+<!-- Modal -->
+<div class="modal-overlay" id="modal-overlay" onclick="handleOverlayClick(event)">
+  <div class="modal">
+    <div class="modal-header">
+      <h2 id="modal-title">Novo Job</h2>
+      <button class="modal-close" onclick="closeModal()">✕</button>
+    </div>
+    <div class="modal-body">
+
+      <div class="field">
+        <label for="f-name">Nome do job</label>
+        <input id="f-name" type="text" placeholder="Ex: Iniciar NEO-168" />
+      </div>
+
+      <div class="form-row">
+        <div class="field">
+          <label for="f-date">Data</label>
+          <input id="f-date" type="date" />
+        </div>
+        <div class="field">
+          <label for="f-time">Horário</label>
+          <input id="f-time" type="time" />
+        </div>
+      </div>
+
+      <div class="field">
+        <label for="f-task">ID da Task</label>
+        <input id="f-task" type="text" placeholder="Ex: NEO-168" />
+      </div>
+
+      <div class="field">
+        <label>Ações (na ordem de execução)</label>
+        <div class="field-checkbox">
+          <label class="checkbox-item">
+            <input type="checkbox" id="act-login" value="login" />
+            <span>Login</span>
+            <small>sempre necessário</small>
+          </label>
+          <label class="checkbox-item">
+            <input type="checkbox" id="act-executing" value="set_task_executing" />
+            <span>Iniciar tarefa</span>
+            <small>set_task_executing</small>
+          </label>
+          <label class="checkbox-item">
+            <input type="checkbox" id="act-hours" value="add_hours" onchange="toggleHoursField()" />
+            <span>Lançar horas</span>
+            <small>add_hours</small>
+          </label>
+          <label class="checkbox-item">
+            <input type="checkbox" id="act-completed" value="set_task_completed" />
+            <span>Concluir tarefa</span>
+            <small>set_task_completed</small>
+          </label>
+        </div>
+      </div>
+
+      <div class="field" id="hours-field" style="display:none;">
+        <label for="f-hours">Horas a lançar</label>
+        <input id="f-hours" type="number" min="0.5" max="24" step="0.5" placeholder="Ex: 8" />
+      </div>
+
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-ghost" onclick="closeModal()">Cancelar</button>
+      <button class="btn btn-primary" onclick="saveJob()">Salvar Job</button>
+    </div>
+  </div>
+</div>
 
 <div id="toast"></div>
 
 <script>
+  // Ordem canônica das ações — usada para serializar
+  const ACTION_ORDER = ['login', 'set_task_executing', 'add_hours', 'set_task_completed'];
+
+  let _editingIndex = null;
+
+  // ── Jobs embutidos pelo servidor (para openModal em edição sem fetch) ──
+  const JOBS = {{ jobs | tojson }};
+
+  /* ── Toast ── */
   function showToast(msg, type = 'success') {
     const t = document.getElementById('toast');
     t.textContent = msg;
@@ -239,18 +423,84 @@
     setTimeout(() => { t.className = ''; }, 3500);
   }
 
-  async function saveConfig() {
-    const content = document.getElementById('yaml-editor').value;
+  /* ── Modal ── */
+  function openModal(job = null, index = null) {
+    _editingIndex = index;
+    document.getElementById('modal-title').textContent = job ? 'Editar Job' : 'Novo Job';
+
+    // Reseta o form
+    document.getElementById('f-name').value  = job?.name     || '';
+    document.getElementById('f-date').value  = job?.date     || '';
+    document.getElementById('f-time').value  = job?.time     || '';
+    document.getElementById('f-task').value  = job?.task_id  || '';
+    document.getElementById('f-hours').value = job?.hours    || '';
+
+    document.getElementById('act-login').checked     = job?.actions?.includes('login') || false;
+    document.getElementById('act-executing').checked = job?.actions?.includes('set_task_executing') || false;
+    document.getElementById('act-hours').checked     = job?.actions?.includes('add_hours') || false;
+    document.getElementById('act-completed').checked = job?.actions?.includes('set_task_completed') || false;
+
+    toggleHoursField();
+    document.getElementById('modal-overlay').classList.add('open');
+    document.getElementById('f-name').focus();
+  }
+
+  function editJob(index) {
+    openModal(JOBS[index], index);
+  }
+
+  function closeModal() {
+    document.getElementById('modal-overlay').classList.remove('open');
+    _editingIndex = null;
+  }
+
+  function handleOverlayClick(e) {
+    if (e.target === document.getElementById('modal-overlay')) closeModal();
+  }
+
+  function toggleHoursField() {
+    const show = document.getElementById('act-hours').checked;
+    document.getElementById('hours-field').style.display = show ? 'block' : 'none';
+    if (!show) document.getElementById('f-hours').value = '';
+  }
+
+  /* ── CRUD ── */
+  async function saveJob() {
+    const name    = document.getElementById('f-name').value.trim();
+    const date    = document.getElementById('f-date').value;
+    const time    = document.getElementById('f-time').value;
+    const task_id = document.getElementById('f-task').value.trim();
+    const hoursRaw = document.getElementById('f-hours').value;
+
+    if (!name || !date || !time || !task_id) {
+      showToast('Preencha todos os campos obrigatórios.', 'error');
+      return;
+    }
+
+    const actions = ACTION_ORDER.filter(a => {
+      const idMap = { login: 'login', set_task_executing: 'executing', add_hours: 'hours', set_task_completed: 'completed' };
+      return document.getElementById(`act-${idMap[a]}`).checked;
+    });
+
+    if (actions.length === 0) {
+      showToast('Selecione ao menos uma ação.', 'error');
+      return;
+    }
+
+    const body = { name, date, time, task_id, actions };
+    if (hoursRaw) body.hours = parseFloat(hoursRaw);
+
+    const isEdit = _editingIndex !== null;
+    const url    = isEdit ? `/api/jobs/${_editingIndex}` : '/api/jobs';
+    const method = isEdit ? 'PUT' : 'POST';
+
     try {
-      const res = await fetch('/api/config', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ content }),
-      });
+      const res  = await fetch(url, { method, headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body) });
       const data = await res.json();
       if (res.ok) {
-        showToast('Configuração salva! Recarregando...', 'success');
-        setTimeout(() => location.reload(), 1500);
+        showToast(data.message, 'success');
+        closeModal();
+        setTimeout(() => location.reload(), 800);
       } else {
         showToast('Erro: ' + (data.detail || 'Falha ao salvar'), 'error');
       }
@@ -259,36 +509,68 @@
     }
   }
 
-  async function runJob(index, btn) {
+  async function deleteJob(index, btn) {
+    if (!confirm('Remover este job?')) return;
     btn.disabled = true;
-    btn.textContent = '⏳ Iniciando...';
-    const status = document.getElementById(`status-${index}`);
-    status.style.display = 'block';
-
     try {
-      const res = await fetch('/api/run-job', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ job_index: index }),
-      });
+      const res  = await fetch(`/api/jobs/${index}`, { method: 'DELETE' });
       const data = await res.json();
       if (res.ok) {
         showToast(data.message, 'success');
-        btn.textContent = '✓ Iniciado';
-        status.textContent = 'Rodando em background — verifique os logs.';
+        setTimeout(() => location.reload(), 600);
       } else {
         showToast('Erro: ' + (data.detail || 'Falha'), 'error');
         btn.disabled = false;
-        btn.textContent = '▶ Executar agora';
+      }
+    } catch (e) {
+      showToast('Erro de conexão com o servidor.', 'error');
+      btn.disabled = false;
+    }
+  }
+
+  async function runJob(index, btn) {
+    btn.disabled = true;
+    btn.textContent = '⏳';
+    const status = document.getElementById(`status-${index}`);
+    status.style.display = 'block';
+    try {
+      const res  = await fetch('/api/run-job', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ job_index: index }) });
+      const data = await res.json();
+      if (res.ok) {
+        showToast(data.message, 'success');
+        btn.textContent = '✓';
+      } else {
+        showToast('Erro: ' + (data.detail || 'Falha'), 'error');
+        btn.disabled = false;
+        btn.textContent = '▶ Executar';
         status.style.display = 'none';
       }
     } catch (e) {
       showToast('Erro de conexão com o servidor.', 'error');
       btn.disabled = false;
-      btn.textContent = '▶ Executar agora';
+      btn.textContent = '▶ Executar';
       status.style.display = 'none';
     }
   }
+
+  async function saveYaml() {
+    const content = document.getElementById('yaml-editor').value;
+    try {
+      const res  = await fetch('/api/config', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ content }) });
+      const data = await res.json();
+      if (res.ok) {
+        showToast('YAML salvo! Recarregando...', 'success');
+        setTimeout(() => location.reload(), 1200);
+      } else {
+        showToast('Erro: ' + (data.detail || 'Falha ao salvar'), 'error');
+      }
+    } catch (e) {
+      showToast('Erro de conexão com o servidor.', 'error');
+    }
+  }
+
+  // Fecha modal com Escape
+  document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
 </script>
 
 </body>
