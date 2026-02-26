@@ -27,6 +27,7 @@ def set_task_completed(page: Page, task_id: str) -> bool:
 
     search_input = page.locator(f"input[placeholder='{search_placeholder}']")
     search_input.fill(task_id)
+    page.wait_for_timeout(1500)
     page.wait_for_load_state("networkidle")
 
     rows = page.locator("tbody tr")

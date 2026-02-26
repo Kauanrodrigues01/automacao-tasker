@@ -14,8 +14,17 @@ class BrowserSession:
         """Inicia o browser e retorna a página ativa."""
         headless = os.getenv("HEADLESS", "true").lower() == "true"
 
+        # Flags obrigatórias em Docker/containers:
+        # --no-sandbox: sandbox de processo incompatível com namespaces do container
+        # --disable-dev-shm-usage: /dev/shm limitado a 64MB no Docker, causa crash
+        # --disable-gpu: sem GPU disponível em headless, evita falhas de renderização
+        browser_args = ["--no-sandbox", "--disable-dev-shm-usage", "--disable-gpu"]
+
         self._playwright = sync_playwright().start()
-        self._browser = self._playwright.chromium.launch(headless=headless)
+        self._browser = self._playwright.chromium.launch(
+            headless=headless,
+            args=browser_args,
+        )
         self._page = self._browser.new_page()
 
         return self._page

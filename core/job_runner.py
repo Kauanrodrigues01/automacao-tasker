@@ -31,22 +31,34 @@ def run_job(job: dict):
 
     logger.info(f"Iniciando job: '{name}' | task: {task_id} | ações: {actions}")
 
-    with BrowserSession() as page:
-        for action_name in actions:
-            if action_name not in ACTION_MAP:
-                logger.warning(f"Ação desconhecida ignorada: '{action_name}'")
-                continue
+    try:
+        with BrowserSession() as page:
+            for action_name in actions:
+                if action_name not in ACTION_MAP:
+                    logger.warning(f"Ação desconhecida ignorada: '{action_name}'")
+                    continue
 
-            logger.info(f"Executando ação: {action_name}")
-            action_fn = ACTION_MAP[action_name]
+                logger.info(f"Executando ação: {action_name}")
+                action_fn = ACTION_MAP[action_name]
 
-            if action_name == "login":
-                action_fn(page)
+                if action_name == "login":
+                    ok = action_fn(page)
+                    if not ok:
+                        logger.error(f"Login falhou — abortando job '{name}'.")
+                        return
 
-            elif action_name == "add_hours":
-                action_fn(page, task_id, hours)
+                elif action_name == "add_hours":
+                    ok = action_fn(page, task_id, hours)
+                    if not ok:
+                        logger.error(f"add_hours falhou para task {task_id}.")
 
-            elif action_name in ("set_task_executing", "set_task_completed"):
-                action_fn(page, task_id)
+                elif action_name in ("set_task_executing", "set_task_completed"):
+                    ok = action_fn(page, task_id)
+                    if not ok:
+                        logger.error(f"{action_name} falhou para task {task_id}.")
+
+    except Exception:
+        logger.exception(f"Erro inesperado durante job '{name}':")
+        return
 
     logger.info(f"Job '{name}' finalizado.")
